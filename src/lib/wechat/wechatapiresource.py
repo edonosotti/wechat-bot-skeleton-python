@@ -1,7 +1,7 @@
 import hashlib
-import time
 import falcon
-import xmltodict
+
+from .wechatmessageformatter import WeChatMessageFormatter
 
 # Adapted from: https://gist.github.com/edonosotti/8c4a06eef3ecf80b320ecc2e09a520a9
 # See: https://falcon.readthedocs.io/en/stable/user/quickstart.html
@@ -9,38 +9,6 @@ class WeChatApiResource(object):
     def __init__(self, db_manager, token):
         self.db_manager = db_manager
         self.token = token
-
-    # Check if the message XML is valid, this simple bot handles TEXT messages only!
-    # To learn more about the supported types of messages and how to implement them, see:
-    # Common Messages: http://admin.wechat.com/wiki/index.php?title=Common_Messages
-    # Event Messages: http://admin.wechat.com/wiki/index.php?title=Event-based_Messages
-    # Speech Recognition Messages: http://admin.wechat.com/wiki/index.php?title=Speech_Recognition_Messages
-    def validate_message(self, message):
-        return (
-            message != None and
-            message['xml'] != None and
-            message['xml']['MsgType'] != None and
-            message['xml']['MsgType'] == 'text' and
-            message['xml']['Content'] != None
-        )
-
-    # Format the reply according to the WeChat XML format for synchronous replies,
-    # see: http://admin.wechat.com/wiki/index.php?title=Callback_Messages
-    def format_message(self, original_message, content):
-        return (
-            "<xml>"
-            "<ToUserName><![CDATA[%s]]></ToUserName>"
-            "<FromUserName><![CDATA[%s]]></FromUserName>"
-            "<CreateTime>%s</CreateTime>"
-            "<MsgType><![CDATA[text]]></MsgType>"
-            "<Content><![CDATA[%s]]></Content>"
-            "</xml>"
-        ) % (
-            original_message['xml']['FromUserName'], # From and To must be inverted in replies ;)
-            original_message['xml']['ToUserName'], # Same as above!
-            time.gmtime(),
-            content
-        )
 
     # The WeChat server will issue a GET request in order to verify the chatbot backend server upon configuration.
     # See: http://admin.wechat.com/wiki/index.php?title=Getting_Started#Step_2._Verify_validity_of_the_URL
@@ -69,20 +37,21 @@ class WeChatApiResource(object):
     # Messages will be POSTed from the WeChat server to the chatbot backend server,
     # see: http://admin.wechat.com/wiki/index.php?title=Common_Messages
     def on_post(self, request, response):
-        # Parse the WeChat message XML format
-        message = xmltodict.parse(request.bounded_stream.read())
+        formatter = WeChatMessageFormatter()
+        message = formatter.parse_incoming_message(request.bounded_stream.read())
 
-        if self.validate_message(message):
+        if message['valid']:
+            # Queue the message for delayed processing
+            self.db_manager.queue_message(message)
             # WeChat always requires incoming user messages to be acknowledged at
             # least with an empty string (empty strings are not shown to users),
             # see: https://chatbotsmagazine.com/building-chatbots-for-wechat-part-1-dba8f160349
             # In this sample app, we simulate a "Customer Service"-like scenario
             # providing an instant reply to the user, announcing that a complete
             # reply will follow.
-            self.db_manager.queue_message(message)
             reply = "Thank you for your message. We will get back to you as soon as possible!"
             response.status = falcon.HTTP_200
-            response.body = self.format_message(message, reply)
+            response.body = formatter.format_instant_reply(message, reply)
         else:
             response.status = falcon.HTTP_200
             response.body = "Message was sent in a wrong format."
