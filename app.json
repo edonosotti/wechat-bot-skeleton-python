@@ -1,0 +1,8 @@
+{
+  "name": "wechat-bot-skeleton-python",
+  "description": "A WeChat (and Weixin) chatbot skeleton in Python with queue/delayed messages support.",
+  "image": "heroku/python",
+  "repository": "",
+  "keywords": ["python"],
+  "addons": []
+}
