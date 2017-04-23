@@ -3,8 +3,8 @@ import falcon
 import gunicorn
 
 from dotenv import load_dotenv, find_dotenv
-from lib.db.redismanager import RedisManager
-from lib.wechat.wechatapiresource import WeChatApiResource
+from .lib.db.redismanager import RedisManager
+from .lib.wechat.wechatapiresource import WeChatApiResource
 
 # Load .env files for local development (DO NOT push it to production!)
 load_dotenv(find_dotenv())
