@@ -2,7 +2,9 @@ import json
 import logging
 import urllib.request
 
-class WeChatQueueProcessor(object):
+from ..interfaces.iqueueprocessor import IQueueProcessor
+
+class WeChatQueueProcessor(IQueueProcessor):
     def __init__(self, app_id, app_secret):
         self.app_id = app_id
         self.app_secret = app_secret

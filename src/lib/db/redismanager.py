@@ -1,7 +1,7 @@
 import redis
 import pickle
 
-from .idatabasemanager import IDatabaseManager
+from ..interfaces.idatabasemanager import IDatabaseManager
 
 class RedisManager(IDatabaseManager):
     KEY_MESSAGE_QUEUE = 'message_queue'
