@@ -11,13 +11,11 @@ class RedisManager(IDatabaseManager):
 
     def queue_message(self, message):
         serialized_message = pickle.dumps(message)
-        self.connection.rpush(self.KEY_MESSAGE_QUEUE, message)
-        # self.connection.save()
+        self.connection.rpush(self.KEY_MESSAGE_QUEUE, serialized_message)
 
     def get_queued_message(self):
         serialized_message = self.connection.lpop(self.KEY_MESSAGE_QUEUE)
         print(serialized_message)
-        # self.connection.save()
         if serialized_message != None:
             return pickle.loads(serialized_message)
         return None
