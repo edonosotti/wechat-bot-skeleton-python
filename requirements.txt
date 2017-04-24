@@ -2,5 +2,4 @@ python_dotenv==0.6.3
 falcon==1.1.0
 gunicorn==19.7.0
 xmltodict==0.10.2
-dotenv==0.0.5
 redis==2.10.5
