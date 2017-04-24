@@ -1,8 +1,12 @@
 import os
+import logging
 
 from dotenv import load_dotenv, find_dotenv
 from lib.db.redismanager import RedisManager
 from lib.wechat.wechatqueueprocessor import WeChatQueueProcessor
+
+# Setup logger
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
 # Load .env files for local development (DO NOT push it to production!)
 load_dotenv(find_dotenv())
