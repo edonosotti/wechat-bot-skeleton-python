@@ -15,7 +15,6 @@ class RedisManager(IDatabaseManager):
 
     def get_queued_message(self):
         serialized_message = self.connection.lpop(self.KEY_MESSAGE_QUEUE)
-        print(serialized_message)
         if serialized_message != None:
             return pickle.loads(serialized_message)
         return None
