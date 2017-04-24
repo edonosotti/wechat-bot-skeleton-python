@@ -1,6 +1,5 @@
 import os
 import falcon
-import gunicorn
 import logging
 
 from dotenv import load_dotenv, find_dotenv
