@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python.png?branch=master)](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python)
+
 # WeChat Bot Skeleton - Python version
 
 ## Introduction
