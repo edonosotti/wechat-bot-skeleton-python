@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python.svg?branch=master)](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python)
-
 [![Code Climate](https://codeclimate.com/github/edonosotti/wechat-bot-skeleton-python/badges/gpa.svg)](https://codeclimate.com/github/edonosotti/wechat-bot-skeleton-python)
 
 # WeChat Bot Skeleton - Python version
