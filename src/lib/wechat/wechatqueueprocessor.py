@@ -5,6 +5,8 @@ import urllib.request
 from ..interfaces.iqueueprocessor import IQueueProcessor
 
 class WeChatQueueProcessor(IQueueProcessor):
+    WECHAT_URL = "https://api.wechat.com/cgi-bin"
+
     def __init__(self, app_id, app_secret):
         self.app_id = app_id
         self.app_secret = app_secret
@@ -12,11 +14,12 @@ class WeChatQueueProcessor(IQueueProcessor):
     # See: http://admin.wechat.com/wiki/index.php?title=Access_token
     def get_access_token(self):
         url = (
-            "https://api.wechat.com/cgi-bin/token"
+            "%s/token"
             "?grant_type=client_credential"
             "&appid=%s"
             "&secret=%s"
         ) % (
+            self.WECHAT_URL,
             self.app_id,
             self.app_secret
         )
@@ -28,7 +31,7 @@ class WeChatQueueProcessor(IQueueProcessor):
         if not 'errcode' in token_info:
             return token_info['access_token']
 
-        logging.error("Error getting WeChat access token: %s", body)
+        logging.error("Error getting WeChat access token: %s", response_body)
         return None
 
     # See: http://admin.wechat.com/wiki/index.php?title=Customer_Service_Messages
@@ -36,7 +39,7 @@ class WeChatQueueProcessor(IQueueProcessor):
         access_token = self.get_access_token()
 
         if access_token != None:
-            url = "https://api.wechat.com/cgi-bin/message/custom/send?access_token=%s" % access_token
+            url = "%s/message/custom/send?access_token=%s" % (self.WECHAT_URL, access_token)
             request_body = {
                 'touser': message['sender'],
                 'msgtype': 'text',
@@ -47,9 +50,11 @@ class WeChatQueueProcessor(IQueueProcessor):
 
             response = urllib.request.urlopen(url, json.dumps(request_body).encode('utf-8'))
             response_body = response.read().decode('utf-8')
+            result = json.loads(response_body)
 
-            if 'errcode' in response_body and response_body['errcode'] == 0:
-                logging.error("Error sending Customer Service type message: %s", response_body)
+            if 'errcode' in result and result['errcode'] == 0:
                 return True
+            else:
+                logging.error("Error sending Customer Service type message: %s", response_body)
 
         return False
