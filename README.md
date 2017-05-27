@@ -96,3 +96,23 @@ $ heroku info -a {HEROKU_APP_NAME}
 ```
 
 then configure WeChat to forward messages to it as described in **Running locally**.
+
+## Tests
+
+This application uses [`pytest`](https://pytest.org. Run:
+
+```
+$ pytest
+```
+
+from the project root to run tests.
+
+**WARNING**
+
+The Queue Manager implements the FIFO pattern, so in order for tests to succeed, they MUST be ran against a private Redis instance where no other processes are running I/O operations. Otherwise, another process could alter the queue by pushing and pulling other messages, thus making the test fail.
+
+You can specify a different Redis connection string at runtime:
+
+```
+$ REDIS_URL={test_redis_instance_URL} pytest
+```

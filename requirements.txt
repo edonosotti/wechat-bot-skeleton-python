@@ -1,5 +1,8 @@
-python_dotenv==0.6.3
+python_dotenv==0.6.4
 falcon==1.1.0
 gunicorn==19.7.0
 xmltodict==0.10.2
 redis==2.10.5
+pytest==3.0.7
+pytest_falcon==0.4.2
+webmock==1.1.0
