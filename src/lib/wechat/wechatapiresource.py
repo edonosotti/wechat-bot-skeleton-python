@@ -28,11 +28,11 @@ class WeChatApiResource(object):
 
         # If the signature is correct, output the same "echostr" provided by the WeChat server as a parameter
         if signature == verification_string:
-          response.status = falcon.HTTP_200
-          response.body = echostr
+            response.status = falcon.HTTP_200
+            response.body = echostr
         else:
-          response.status = falcon.HTTP_500
-          response.body = ""
+            response.status = falcon.HTTP_500
+            response.body = ""
 
     # Messages will be POSTed from the WeChat server to the chatbot backend server,
     # see: http://admin.wechat.com/wiki/index.php?title=Common_Messages
