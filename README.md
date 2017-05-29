@@ -102,7 +102,7 @@ then configure WeChat to forward messages to it as described in **Running locall
 
 ## Tests
 
-This application uses [`pytest`](https://pytest.org. Run:
+This application uses [`pytest`](https://pytest.org). Run:
 
 ```
 $ pytest
