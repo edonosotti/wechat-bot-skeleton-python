@@ -46,3 +46,14 @@ class WeChatMessageFormatter(object):
             time.gmtime(),
             response_content
         )
+
+    # Format the reply according to the WeChat JSON format for asynchronous replies,
+    # see: http://admin.wechat.com/wiki/index.php?title=Customer_Service_Messages#Text_Message
+    def format_delayed_reply(self, queued_message, response_content):
+        return {
+                'touser': queued_message['sender'],
+                'msgtype': 'text',
+                'text': {
+                    'content': response_content
+                }
+            }
