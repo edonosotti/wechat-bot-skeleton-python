@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python.svg?branch=master)](https://travis-ci.org/edonosotti/wechat-bot-skeleton-python)
-[![codebeat badge](https://codebeat.co/badges/8a864a9f-0ec2-4d6d-9273-2383586fcae5)](https://codebeat.co/projects/github-com-edonosotti-wechat-bot-skeleton-python-master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/2a5056bd8496f957a0f1/maintainability)](https://codeclimate.com/github/edonosotti/wechat-bot-skeleton-python/maintainability)
-
 # WeChat Bot Skeleton - Python version
 
 ## Introduction
